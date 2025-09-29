@@ -3,18 +3,8 @@ import { buttonVariants } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import React from "react";
 
-// Simulate API call with 10 seconds delay
-async function dummydata() {
-  return new Promise<string>((resolve) => {
-    setTimeout(() => {
-      console.log("Timeout ends");
-      resolve("Hello Dashboard after 10 secs");
-    }, 10000); // 10 seconds
-  });
-}
 
 async function getData(user_id: string) {
   try {
@@ -34,12 +24,10 @@ async function DashboardPage() {
   const { getUser } = getKindeServerSession();
   const user = await getUser();
 
-  if (!user) {
-    return redirect("/api/auth/register");
-  }
+
   const myBlogs = await getData(user?.id ?? "0");
   return (
-    <div className="p-4 md:p-6">
+    <div>
       <div className="flex justify-between items-center">
         <h3 className="text-2xl font-semibold text-gray-600 my-10">
           Your Posts

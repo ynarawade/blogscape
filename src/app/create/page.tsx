@@ -10,16 +10,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { handleCreatePostAction } from "@/lib/actions";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { redirect } from "next/navigation";
 import React from "react";
 
-async function CreateBlogPage() {
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
-  if (!user) {
-    return redirect("/api/auth/register");
-  }
+function CreateBlogPage() {
+ 
   return (
     <div>
       <Card className="max-w-lg mx-auto my-10">

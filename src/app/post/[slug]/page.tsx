@@ -1,10 +1,10 @@
 import { buttonVariants } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+
 
 // Fetch single post
 async function fetchPost(id: string) {
@@ -18,11 +18,7 @@ async function fetchPost(id: string) {
 
 async function PostsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const { getUser } = getKindeServerSession();
-  const user = await getUser();
-  if (!user) {
-    return redirect("/api/auth/register");
-  }
+ 
   const post = await fetchPost(slug);
 
   return (
