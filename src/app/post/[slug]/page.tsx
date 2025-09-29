@@ -1,9 +1,10 @@
 import { buttonVariants } from "@/components/ui/button";
 import { prisma } from "@/lib/db";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
 // Fetch single post
 async function fetchPost(id: string) {
@@ -17,15 +18,17 @@ async function fetchPost(id: string) {
 
 async function PostsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/register");
+  }
   const post = await fetchPost(slug);
 
   return (
     <div className="mx-auto max-w-3xl py-8 px-4 space-y-6">
       {/* Back button */}
-      <Link
-        className={buttonVariants({ variant: "secondary" })}
-        href="/"
-      >
+      <Link className={buttonVariants({ variant: "secondary" })} href="/">
         Back to posts
       </Link>
 

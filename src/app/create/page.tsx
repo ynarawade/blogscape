@@ -10,9 +10,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { handleCreatePostAction } from "@/lib/actions";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+import { redirect } from "next/navigation";
 import React from "react";
 
-function CreateBlogPage() {
+async function CreateBlogPage() {
+  const { getUser } = getKindeServerSession();
+  const user = await getUser();
+  if (!user) {
+    return redirect("/api/auth/register");
+  }
   return (
     <div>
       <Card className="max-w-lg mx-auto my-10">
@@ -23,7 +30,10 @@ function CreateBlogPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="flex flex-col gap-y-5" action={handleCreatePostAction}>
+          <form
+            className="flex flex-col gap-y-5"
+            action={handleCreatePostAction}
+          >
             <div className="flex flex-col gap-y-3">
               <Label>Title</Label>
               <Input placeholder="Enter title" name="title" required />
